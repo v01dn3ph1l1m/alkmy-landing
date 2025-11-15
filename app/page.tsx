@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-// import { Header } from "@/components/header";
+import Prism from "../components/Prism";
+import LightRays from "../components/LightRays";
+import CurvedLoop from "../components/CurvedLoop";
+import HeroPipeAnimation from "../components/PipeFlow";
+import HeroPipeAnimationA from "../components/PipeFlowA";
+import AppHero from "../components/PipeFlowGlow";
 
 export default function ScrollSnapPage() {
   const [activeSection, setActiveSection] = useState(0);
@@ -38,17 +43,80 @@ export default function ScrollSnapPage() {
       <div className="snap-container" ref={containerRef}>
         {/* Hero Section */}
         <section className="snap-section bg-gradient-to-br from-slate-900 to-slate-800">
+          <div
+            style={{
+              width: "100%",
+              height: "100vh",
+              position: "absolute",
+              zIndex: 5,
+            }}
+          >
+            <Prism
+              animationType="rotate"
+              timeScale={0.1}
+              height={3.5}
+              baseWidth={5.5}
+              scale={0.6}
+              hueShift={0}
+              colorFrequency={1}
+              noise={0}
+              glow={0.2}
+              offset={{ y: 250, x: 0 }}
+            />
+          </div>
+          <div
+            style={{
+              width: "100%",
+              height: "100vh",
+              position: "absolute",
+              zIndex: 10,
+            }}
+          >
+            <LightRays
+              raysOrigin="top-center"
+              raysColor="#ffffffff"
+              raysSpeed={1.5}
+              lightSpread={0.8}
+              rayLength={0.5}
+              followMouse={true}
+              mouseInfluence={0.5}
+              noiseAmount={0}
+              distortion={0}
+              className="custom-rays"
+            />
+          </div>
+          <div
+            style={{
+              width: "100%",
+              height: "100vh",
+              position: "absolute",
+              bottom: 0,
+              zIndex: 10,
+            }}
+          >
+            {/* <HeroPipeAnimationA /> */}
+            <AppHero />
+            {/* <CurvedLoop
+              marqueeText="Reddit ✦ Slack ✦ Discord ✦ Play Store ✦ App Store ✦"
+              speed={1}
+              curveAmount={500}
+              direction="right"
+              interactive={true}
+              className="marquee"
+            /> */}
+          </div>
+
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-20 right-10 w-72 h-72 bg-accent rounded-full mix-blend-screen opacity-20 blur-3xl" />
             <div className="absolute bottom-20 left-10 w-72 h-72 bg-accent rounded-full mix-blend-screen opacity-20 blur-3xl" />
           </div>
-
-          <div className="relative z-10 text-center px-4 max-w-4xl">
-            <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up">
-              Smooth Scrolling
+          <div className="relative z-10 text-center px-4 max-w-5xl">
+            <h1 className="text-6xl md:text-7xl font-bold text-white mb-2 animate-fade-in-up  headerMainText ">
+              The Agentic AI Co-Pilot for Product Teams
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-8 animate-fade-in-up stagger-1">
-              Full-screen sections with snap-to behavior
+            <p className="text-xl md:text-2xl text-slate-100 mb-8 animate-fade-in-up stagger-1 ">
+              Alkmy transforms chaotic customer voice from the deepest corners
+              of the internet into clear, actionable product intelligence.
             </p>
             <button
               onClick={() => scrollToSection(1)}
