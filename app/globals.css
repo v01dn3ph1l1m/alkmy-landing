@@ -136,16 +136,27 @@ body {
 }
 
 .snap-container {
-  height: 100vh;
-  overflow-y: scroll;
+  height: 100%;
+  /* overflow-y: scroll;
   scroll-snap-type: y mandatory;
-  scroll-padding-top: 0;
+  scroll-padding-top: 0; */
 }
 
 .snap-section {
   height: 100vh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  /* scroll-snap-align: start;
+  scroll-snap-stop: always; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-section {
+  height: 150vh;
+  /* scroll-snap-align: start;
+  scroll-snap-stop: always; */
   display: flex;
   align-items: center;
   justify-content: center;

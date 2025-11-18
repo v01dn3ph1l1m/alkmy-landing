@@ -81,11 +81,11 @@ export default function ScrollSnapPage() {
 
       <div className="snap-container" ref={containerRef}>
         {/* Hero Section */}
-        <section className="snap-section bg-gradient-to-br from-slate-900 to-slate-800">
+        <section className="header-section bg-gradient-to-br from-slate-900 to-slate-800">
           <div
             style={{
               width: "100%",
-              height: "100vh",
+              height: "150vh",
               position: "absolute",
               zIndex: 5,
             }}
@@ -106,7 +106,7 @@ export default function ScrollSnapPage() {
           <div
             style={{
               width: "100%",
-              height: "100vh",
+              height: "150vh",
               position: "absolute",
               zIndex: 10,
             }}
