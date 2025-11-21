@@ -74,7 +74,7 @@ export default function ScrollSnapPage() {
           items={items}
           baseColor="#ffffff20"
           menuColor="white"
-          buttonBgColor="#fff"
+          buttonBgColor="white"
           buttonTextColor="black"
           ease="power3.out"
         />
@@ -85,7 +85,7 @@ export default function ScrollSnapPage() {
               width: "100%",
               height: "150vh",
               position: "absolute",
-              zIndex: 5,
+              zIndex: 10,
             }}
           >
             <Prism
@@ -106,7 +106,7 @@ export default function ScrollSnapPage() {
               width: "100%",
               height: "150vh",
               position: "absolute",
-              zIndex: 10,
+              zIndex: 5,
             }}
           >
             <LightRays
@@ -256,13 +256,6 @@ export default function ScrollSnapPage() {
 
         {/* Final Section */}
         <section className="snap-section bg-gradient-to-br from-slate-900 to-slate-800">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-10 left-10 w-20 h-20 border border-accent rounded-lg animate-pulse" />
-              <div className="absolute bottom-10 right-10 w-20 h-20 border border-accent rounded-lg animate-pulse" />
-            </div>
-          </div>
-
           <div className="relative z-10 text-center max-w-3xl px-4">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
               Ready to scroll?
