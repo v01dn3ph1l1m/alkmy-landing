@@ -6,6 +6,7 @@ import LightRays from "../components/LightRays";
 import CurvedLoop from "../components/CurvedLoop";
 import AppHero from "../components/PipeFlowGlow";
 import CardNav from "../components/CardNav";
+import { Footer } from "../components/Footer";
 
 export default function ScrollSnapPage() {
   const [activeSection, setActiveSection] = useState(0);
@@ -272,6 +273,7 @@ export default function ScrollSnapPage() {
             </button>
           </div>
         </section>
+        <Footer />
       </div>
     </>
   );
