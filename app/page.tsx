@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import Prism from "../components/Prism";
 import LightRays from "../components/LightRays";
 import CurvedLoop from "../components/CurvedLoop";
@@ -257,20 +258,32 @@ export default function ScrollSnapPage() {
 
         {/* Final Section */}
         <section className="snap-section">
-          <div className="relative z-10 text-center max-w-3xl px-4">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
-              Ready to scroll?
+          <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-4 mx-auto text-center">
+            <h2 className="mb-6 text-5xl font-bold leading-tight text-white md:text-6xl animate-fade-in-up">
+              Dare to see what they're <br />
+              <span className="text-indigo-400">really saying?</span>
             </h2>
-            <p className="text-xl text-slate-400 mb-8 animate-fade-in-up stagger-1">
-              Go back to the top and experience the smooth scroll-snapping in
-              action.
+
+            <p className="max-w-2xl mb-10 text-lg text-slate-400 animate-fade-in-up stagger-1">
+              Enter your App Store or Google Play URL. We'll analyze your last 100 reviews
+              and email you one actionable insight. Free.
             </p>
-            <button
-              onClick={() => scrollToSection(0)}
-              className="px-8 py-3 bg-accent text-accent-foreground rounded-full font-semibold hover:shadow-lg hover:shadow-accent/50 transition-all duration-300 animate-fade-in-up stagger-2"
-            >
-              Back to Top
-            </button>
+
+            <div className="flex flex-col items-center w-full max-w-xl gap-4 mb-6 sm:flex-row animate-fade-in-up stagger-2">
+              <input
+                type="text"
+                placeholder="https://apps.apple.com/app/..."
+                className="w-full px-6 py-4 text-white transition-all border border-slate-700 rounded-xl bg-slate-800/50 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 placeholder:text-slate-500"
+              />
+              <button className="flex items-center justify-center w-full px-8 py-4 font-bold text-black transition-transform bg-white sm:w-auto rounded-xl hover:scale-105 active:scale-95 whitespace-nowrap">
+                Analyze Now
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </button>
+            </div>
+
+            <p className="text-sm text-slate-500 animate-fade-in-up stagger-3">
+              No credit card required. Results in ~45 seconds.
+            </p>
           </div>
         </section>
         <Footer />
