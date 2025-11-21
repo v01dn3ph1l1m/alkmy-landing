@@ -139,11 +139,11 @@ export default function ScrollSnapPage() {
 
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-20 right-10 w-72 h-72 bg-accent rounded-full mix-blend-screen opacity-20 blur-3xl" />
-            <div className="absolute bottom-20 left-10 w-72 h-72 bg-accent rounded-full mix-blend-screen opacity-20 blur-3xl" />
+            <div className="absolute bottom-50 left-10 w-72 h-72 bg-accent rounded-full mix-blend-screen opacity-20 blur-3xl" />
           </div>
           <div className="relative z-10 text-center px-4 max-w-4xl mb-45">
             <h1 className="text-6xl md:text-7xl text-white mb-4 animate-fade-in-up  headerMainText ">
-              The Agentic Co-Pilot for Product Teams
+              The Agentic Co-Pilot <br /> for Product Teams
             </h1>
             <p className="text-xl md:text-2xl text-slate-100 mb-8 animate-fade-in-up stagger-1 ">
               Alkmy transforms chaotic customer voice from the deepest corners
