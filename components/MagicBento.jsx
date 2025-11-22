@@ -1,45 +1,46 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
 import './MagicBento.css';
+import { title } from 'process';
 
 const DEFAULT_PARTICLE_COUNT = 12;
-const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = '132, 0, 255';
+const DEFAULT_SPOTLIGHT_RADIUS = 100;
+const DEFAULT_GLOW_COLOR = '195, 155, 101';
 const MOBILE_BREAKPOINT = 768;
 
 const cardData = [
   {
-    color: '#060010',
+    color: '#ffffff16',
     title: 'Analytics',
     description: 'Track user behavior',
     label: 'Insights'
   },
   {
-    color: '#060010',
+    color: '#ffffff16',
     title: 'Dashboard',
     description: 'Centralized data view',
     label: 'Overview'
   },
   {
-    color: '#060010',
+    color: '#ffffff16',
     title: 'Collaboration',
     description: 'Work together seamlessly',
-    label: 'Teamwork'
+    label: 'Insight Clusters'
   },
   {
-    color: '#060010',
-    title: 'Automation',
-    description: 'Streamline workflows',
-    label: 'Efficiency'
+    color: '#ffffff16',
+    description: 'Be ahead, Understand your competitor’s weaknesses and offensively target them.',
+    title: 'Discover Market Vulnerabilities and Opportunities',
+    label: 'Competitor Weaknesses'
   },
   {
-    color: '#060010',
+    color: '#ffffff16',
     title: 'Integration',
     description: 'Connect favorite tools',
     label: 'Connectivity'
   },
   {
-    color: '#060010',
+    color: '#ffffff16',
     title: 'Security',
     description: 'Enterprise-grade protection',
     label: 'Protection'

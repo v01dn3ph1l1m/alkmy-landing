@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Ghost, Search, AlertTriangle } from "lucide-react";
 import Prism from "../components/Prism";
+import TiltedCard from "../components/TiltedCard";
 import LightRays from "../components/LightRays";
 import CurvedLoop from "../components/CurvedLoop";
 import AppHero from "../components/PipeFlowGlow";
 import CardNav from "../components/CardNav";
+import MagicBento from "../components/MagicBento";
 import { Footer } from "../components/Footer";
 
 export default function ScrollSnapPage() {
@@ -167,43 +169,89 @@ export default function ScrollSnapPage() {
           </div>
 
           <div className="relative z-10 max-w-6xl mx-auto px-4">
-            <h2 className="text-5xl md:text-6xl font-bold text-center mb-16 text-white animate-fade-in-up">
-              Why Scroll Snapping?
-            </h2>
+            <div className="text-center mb-16 max-w-6xl mx-auto">
+              <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
+                Most PMs aren't building products. <br />
+                <span className="text-slate-500">They're playing detective.</span>
+              </h2>
+              <p className="text-xl text-slate-400 animate-fade-in-up stagger-1">
+                You're drowning in data but starving for insight. The "Voice of the Customer" is shattered
+                across a thousand Reddit threads, support tickets, and angry tweets. You're essentially flying blind.
+              </p>
+            </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Smooth Experience",
-                  description:
-                    "Navigate through content seamlessly with locked sections",
-                  icon: "✨",
-                },
-                {
-                  title: "Engaging Animation",
-                  description:
-                    "Each section animates in smoothly as you scroll",
-                  icon: "🎬",
-                },
-                {
-                  title: "Full Control",
-                  description:
-                    "Stay focused on what matters with one section at a time",
-                  icon: "🎯",
-                },
-              ].map((feature, i) => (
-                <div
-                  key={i}
-                  className="p-8 bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 animate-fade-in-up border border-slate-700"
-                  style={{ animationDelay: `${(i + 1) * 0.15}s` }}
-                >
-                  <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-2xl font-bold mb-3 text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-slate-300">{feature.description}</p>
-                </div>
-              ))}
+            <div className="grid md:grid-cols-3 gap-8 justify-items-center">
+              <TiltedCard
+                imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
+                altText="Silent Churn"
+                captionText="Silent Churn"
+                containerHeight="300px"
+                containerWidth="300px"
+                imageHeight="300px"
+                imageWidth="300px"
+                rotateAmplitude={12}
+                scaleOnHover={1.05}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div className="w-[300px] h-[300px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                    <Ghost className="w-10 h-10 text-slate-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">Silent Churn</h3>
+                    <p className="text-slate-400 text-sm">
+                      Users leaving for reasons you never even saw coming.
+                    </p>
+                  </div>
+                }
+              />
+
+              <TiltedCard
+                imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
+                altText="Synthesis Failure"
+                captionText="Synthesis Failure"
+                containerHeight="300px"
+                containerWidth="300px"
+                imageHeight="300px"
+                imageWidth="300px"
+                rotateAmplitude={12}
+                scaleOnHover={1.05}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div className="w-[300px] h-[300px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                    <Search className="w-10 h-10 text-slate-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">Synthesis Failure</h3>
+                    <p className="text-slate-400 text-sm">
+                      Manual tagging in spreadsheets? That's not a strategy.
+                    </p>
+                  </div>
+                }
+              />
+
+              <TiltedCard
+                imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
+                altText="HiPPO Decisions"
+                captionText="HiPPO Decisions"
+                containerHeight="300px"
+                containerWidth="300px"
+                imageHeight="300px"
+                imageWidth="300px"
+                rotateAmplitude={12}
+                scaleOnHover={1.05}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div className="w-[300px] h-[300px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                    <AlertTriangle className="w-10 h-10 text-slate-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">HiPPO Decisions</h3>
+                    <p className="text-slate-400 text-sm">
+                      Roadmaps driven by the Highest Paid Person's Opinion, not data.
+                    </p>
+                  </div>
+                }
+              />
             </div>
           </div>
         </section>
@@ -211,17 +259,8 @@ export default function ScrollSnapPage() {
         {/* Content Section 1 */}
         <section className="snap-section">
 
-          <div className="relative z-10 text-center max-w-3xl px-4">
-            <div className="inline-block px-4 py-2 bg-accent/20 border border-accent rounded-full mb-6 animate-fade-in-scale">
-              <span className="text-accent font-semibold">Section 3</span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
-              Anchor your journey
-            </h2>
-            <p className="text-lg text-slate-300 animate-fade-in-up stagger-1">
-              Each section locks into place, giving you time to absorb the
-              content before moving to the next experience.
-            </p>
+          <div className="relative z-10 text-center max-w-6xl px-4">
+            <MagicBento />
           </div>
         </section>
 
@@ -261,7 +300,7 @@ export default function ScrollSnapPage() {
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-4 mx-auto text-center">
             <h2 className="mb-6 text-5xl font-bold leading-tight text-white md:text-6xl animate-fade-in-up">
               Dare to see what they're <br />
-              <span className="text-indigo-400">really saying?</span>
+              <span className="text-[#C39B65]">really saying?</span>
             </h2>
 
             <p className="max-w-2xl mb-10 text-lg text-slate-400 animate-fade-in-up stagger-1">
