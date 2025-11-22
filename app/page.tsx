@@ -239,8 +239,8 @@ export default function ScrollSnapPage() {
           <div className="relative z-10 max-w-6xl mx-auto px-4 mt-40">
             <div className="text-center mb-16 max-w-6xl mx-auto">
               <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
-                Most PMs aren't building products. <br />
-                <span className="text-slate-500">They're playing detective.</span>
+                The Cost of being Deaf <br />
+                <span className="text-slate-500">Stop playing detective. Be Ahead.</span>
               </h2>
               <p className="text-xl text-slate-400 animate-fade-in-up stagger-1">
                 You're drowning in data but starving for insight. The "Voice of the Customer" is shattered
