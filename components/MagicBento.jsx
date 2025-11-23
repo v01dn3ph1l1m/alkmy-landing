@@ -5,6 +5,8 @@ import { useGSAP } from '@gsap/react';
 import './MagicBento.css';
 import { title } from 'process';
 
+import { BarChart2, ListTodo, BrainCircuit, Radar, Network, ShieldCheck } from 'lucide-react';
+
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 100;
 const DEFAULT_GLOW_COLOR = '195, 155, 101';
@@ -15,37 +17,43 @@ const cardData = [
     color: '#ffffff16',
     title: 'Top Pain Points',
     description: 'Immediate prioritization for engineering',
-    label: 'Insights'
+    label: 'Insights',
+    icon: BarChart2
   },
   {
     color: '#ffffff16',
     title: 'Feature Wishlist',
     description: 'See what users want and turn workarounds into features.',
-    label: 'Roadmap Planning'
+    label: 'Roadmap Planning',
+    icon: ListTodo
   },
   {
     color: '#ffffff16',
     title: 'Knowledge on Auto-Pilot',
     description: 'AI-driven grouping of user feedback into actionable thematic patterns by sentiment and volume.',
-    label: 'Insight Clusters'
+    label: 'Insight Clusters',
+    icon: BrainCircuit
   },
   {
     color: '#ffffff16',
     description: 'Be ahead, Understand your competitor’s weaknesses and offensively target them.',
     title: 'Discover Market Vulnerabilities and Opportunities',
-    label: 'Market Radar'
+    label: 'Market Radar',
+    icon: Radar
   },
   {
     color: '#ffffff16',
     title: 'Integrations',
     description: 'Connect all your tools and data sources in one click',
-    label: 'Connectivity'
+    label: 'Connectivity',
+    icon: Network
   },
   {
     color: '#ffffff16',
     title: 'Security',
     description: 'Enterprise-grade protection for your Data',
-    label: 'Protection'
+    label: 'Protection',
+    icon: ShieldCheck
   }
 ];
 
@@ -529,6 +537,7 @@ const MagicBento = ({
                   <div className="magic-bento-card__label">{card.label}</div>
                 </div>
                 <div className="magic-bento-card__content">
+                  {card.icon && <card.icon className="w-8 h-8 text-[#C39B65] mb-4" />}
                   <h2 className="magic-bento-card__title">{card.title}</h2>
                   <p className="magic-bento-card__description">{card.description}</p>
                 </div>
@@ -652,6 +661,7 @@ const MagicBento = ({
                 <div className="magic-bento-card__label">{card.label}</div>
               </div>
               <div className="magic-bento-card__content">
+                {card.icon && <card.icon className="w-8 h-8 text-[#C39B65] mb-4" />}
                 <h2 className="magic-bento-card__title">{card.title}</h2>
                 <p className="magic-bento-card__description">{card.description}</p>
               </div>

@@ -587,8 +587,8 @@ export default function ScrollSnapPage() {
         <section className="snap-section">
 
           <div className="relative z-10 text-center max-w-6xl px-4 mt-32">
-                        <div className="text-center mb-4 max-w-6xl mx-auto">
-              <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
+                        <div className="text-center mb-4 max-w-6xl mx-auto ">
+              <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up ">
                 Why Choose <span className="text-[#C39B65]">Alkmy Intelligence?</span>
               </h2>
             </div>

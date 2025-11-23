@@ -1,3 +1,4 @@
+"use client";
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
