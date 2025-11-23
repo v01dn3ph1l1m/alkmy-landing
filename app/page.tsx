@@ -86,7 +86,7 @@ const SolutionsSection = () => {
               <button 
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`px-6 py-3 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
+                className={`px-6 py-3 rounded-lg text-sm my-1 mx-1 font-bold transition-all whitespace-nowrap ${
                   activeTab === key 
                   ? 'bg-white text-slate-950 shadow-lg' 
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
@@ -99,7 +99,7 @@ const SolutionsSection = () => {
       </div>
 
       {/* Feature Display */}
-      <div className="bg-slate-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+      <div className="rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
          <div className="grid md:grid-cols-12 min-h-[500px]">
             
             {/* Visual Side (Left) */}
@@ -511,7 +511,7 @@ export default function ScrollSnapPage() {
         </section>
 
         {/* Content Section 2 */}
-        <section className="snap-section bg-slate-950 py-24 px-6 relative border-t border-white/5">
+        <section className="snap-section py-24 px-6 relative">
           <SolutionsSection />
         </section>
 
