@@ -3,7 +3,6 @@ import { useRef, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import './MagicBento.css';
-import { title } from 'process';
 
 import { BarChart2, ListTodo, BrainCircuit, Radar, Network, ShieldCheck } from 'lucide-react';
 
