@@ -1,5 +1,7 @@
-import { useRef, useEffect, useCallback, useState } from 'react';
+"use client";
+import { useRef, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import './MagicBento.css';
 import { title } from 'process';
 
@@ -169,7 +171,7 @@ const ParticleCard = ({
     });
   }, [initializeParticles]);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (disableAnimations || !cardRef.current) return;
 
     const element = cardRef.current;
@@ -328,7 +330,7 @@ const GlobalSpotlight = ({
   const spotlightRef = useRef(null);
   const isInsideSection = useRef(false);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (disableAnimations || !gridRef?.current || !enabled) return;
 
     const spotlight = document.createElement('div');
@@ -459,7 +461,7 @@ const BentoCardGrid = ({ children, gridRef }) => (
 const useMobileDetection = () => {
   const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
+  useGSAP(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
 
     checkMobile();

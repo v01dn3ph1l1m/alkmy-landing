@@ -1,5 +1,7 @@
+'use client';
 import { useRef, useEffect, useState } from 'react';
 import { Renderer, Program, Triangle, Mesh } from 'ogl';
+import { useGSAP } from '@gsap/react';
 import './LightRays.css';
 
 const DEFAULT_COLOR = '#ffffff';
@@ -57,7 +59,7 @@ const LightRays = ({
   const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!containerRef.current) return;
 
     observerRef.current = new IntersectionObserver(

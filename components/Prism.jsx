@@ -1,5 +1,7 @@
+'use client';
 import { useEffect, useRef } from 'react';
 import { Renderer, Triangle, Program, Mesh } from 'ogl';
+import { useGSAP } from '@gsap/react';
 import './Prism.css';
 
 const Prism = ({
@@ -21,7 +23,7 @@ const Prism = ({
 }) => {
   const containerRef = useRef(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const container = containerRef.current;
     if (!container) return;
 

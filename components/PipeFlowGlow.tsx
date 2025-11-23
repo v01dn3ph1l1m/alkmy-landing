@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, JSX, useRef, useMemo } from "react";
+import { useGSAP } from "@gsap/react";
 import {
   Brain,
   BarChart,
@@ -90,7 +91,7 @@ export default function AppHero() {
   const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     // Generate random durations and delays only on the client
     const newPaths: AnimatedPath[] = staticPaths.map((path) => {
       const duration = 4 + Math.random() * 3; // 4s to 7s
@@ -119,7 +120,7 @@ export default function AppHero() {
   }, []);
 
   // Handle Responsive Scaling
-  useEffect(() => {
+    useGSAP(() => {
     const handleResize = () => {
       if (containerRef.current) {
         const parent = containerRef.current.parentElement;
