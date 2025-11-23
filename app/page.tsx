@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Ghost, Search, AlertTriangle, MessageSquare, LayoutGrid, Eye } from "lucide-react";
+import { ArrowRight, Ghost, Search, AlertTriangle, MessageSquare, LayoutGrid, Eye, EyeOff, BanknoteArrowUp } from "lucide-react";
 import Prism from "../components/Prism";
 import TiltedCard from "../components/TiltedCard";
 import LightRays from "../components/LightRays";
@@ -478,30 +478,29 @@ export default function ScrollSnapPage() {
                 The Cost of being Deaf <br />
                 <span className="text-slate-500">Stop playing detective. Be Ahead.</span>
               </h2>
-              <p className="text-xl text-slate-400 animate-fade-in-up stagger-1">
-                You're either unaware of what your customers are saying or drowning in data but starving for insight.<br/><br/> The "Voice of the Customer" is shattered
-                across a thousands of Reddit threads, Social Media, Support Tickets, and Angry Tweets.
+              <p className="text-xl text-slate-400 animate-fade-in-up stagger-1 max-w-4xl mx-auto">
+                You're either unaware of what your customers are saying or drowning in data but starving for insight.<br/><br/> <span className="text-[#C39B65]">The "Voice of the Customer" is shattered across a thousands of Reddit threads, Social Media, Support Tickets, and Angry Tweets.</span>
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-items-center">
               <TiltedCard
                 imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
                 altText="Silent Churn"
                 captionText="Silent Churn"
-                containerHeight="300px"
-                containerWidth="300px"
-                imageHeight="300px"
-                imageWidth="300px"
+                containerHeight="250px"
+                containerWidth="250px"
+                imageHeight="250px"
+                imageWidth="250px"
                 rotateAmplitude={12}
                 scaleOnHover={1.05}
                 showMobileWarning={false}
                 showTooltip={false}
                 displayOverlayContent={true}
                 overlayContent={
-                  <div className="w-[300px] h-[300px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                  <div className="w-[250px] h-[250px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
                     <Ghost className="w-10 h-10 text-slate-400 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-2">Silent Churn</h3>
+                    <h3 className="text-xl font-bold text-white mb-2">Silent<br />Churn</h3>
                     <p className="text-slate-400 text-sm">
                       Users leaving for reasons you never even saw coming.
                     </p>
@@ -513,21 +512,21 @@ export default function ScrollSnapPage() {
                 imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
                 altText="Synthesis Failure"
                 captionText="Synthesis Failure"
-                containerHeight="300px"
-                containerWidth="300px"
-                imageHeight="300px"
-                imageWidth="300px"
+                containerHeight="250px"
+                containerWidth="250px"
+                imageHeight="250px"
+                imageWidth="250px"
                 rotateAmplitude={12}
                 scaleOnHover={1.05}
                 showMobileWarning={false}
                 showTooltip={false}
                 displayOverlayContent={true}
                 overlayContent={
-                  <div className="w-[300px] h-[300px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
-                    <Search className="w-10 h-10 text-slate-400 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-2">Synthesis Failure</h3>
+                  <div className="w-[250px] h-[250px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                    <AlertTriangle className="w-10 h-10 text-slate-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">Wasted<br />Cycles</h3>
                     <p className="text-slate-400 text-sm">
-                      Manual tagging in spreadsheets? That's not a strategy.
+                     Engineering spends months building features nobody wants.
                     </p>
                   </div>
                 }
@@ -537,21 +536,45 @@ export default function ScrollSnapPage() {
                 imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
                 altText="HiPPO Decisions"
                 captionText="HiPPO Decisions"
-                containerHeight="300px"
-                containerWidth="300px"
-                imageHeight="300px"
-                imageWidth="300px"
+                containerHeight="250px"
+                containerWidth="250px"
+                imageHeight="250px"
+                imageWidth="250px"
                 rotateAmplitude={12}
                 scaleOnHover={1.05}
                 showMobileWarning={false}
                 showTooltip={false}
                 displayOverlayContent={true}
                 overlayContent={
-                  <div className="w-[300px] h-[300px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
-                    <AlertTriangle className="w-10 h-10 text-slate-400 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-2">HiPPO Decisions</h3>
+                  <div className="w-[250px] h-[250px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                    <BanknoteArrowUp className="w-10 h-10 text-slate-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">HiPPO<br />Decisions</h3>
                     <p className="text-slate-400 text-sm">
                       Roadmaps driven by the Highest Paid Person's Opinion, not data.
+                    </p>
+                  </div>
+                }
+              />
+
+              <TiltedCard
+                imageSrc="https://placehold.co/300x300/0f172a/0f172a.png"
+                altText="HiPPO Decisions"
+                captionText="HiPPO Decisions"
+                containerHeight="250px"
+                containerWidth="250px"
+                imageHeight="250px"
+                imageWidth="250px"
+                rotateAmplitude={12}
+                scaleOnHover={1.05}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div className="w-[250px] h-[250px] p-8 flex flex-col justify-end bg-slate-900/90 border border-slate-800 rounded-[15px]">
+                    <EyeOff className="w-10 h-10 text-slate-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">Competitive<br />Blindness</h3>
+                    <p className="text-slate-400 text-sm">
+                      You get blindsided by competitors who were actually listening.
                     </p>
                   </div>
                 }
@@ -563,7 +586,7 @@ export default function ScrollSnapPage() {
         {/* Content Section 1 */}
         <section className="snap-section">
 
-          <div className="relative z-10 text-center max-w-6xl px-4">
+          <div className="relative z-10 text-center max-w-6xl px-4 mt-32">
                         <div className="text-center mb-4 max-w-6xl mx-auto">
               <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
                 Why Choose <span className="text-[#C39B65]">Alkmy Intelligence?</span>

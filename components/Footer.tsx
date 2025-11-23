@@ -1,3 +1,4 @@
+import Image from "next/image";
 export const Footer = () => {
   return (
     <div className="relative mt-16 bg-white">
@@ -20,24 +21,13 @@ export const Footer = () => {
               title="Company"
               className="inline-flex items-center"
             >
-              <svg
-                className="w-8 text-gray-900"
-                viewBox="0 0 24 24"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeMiterlimit="10"
-                stroke="currentColor"
-                fill="none"
-              >
-                <rect x="3" y="1" width="7" height="12" />
-                <rect x="3" y="17" width="7" height="6" />
-                <rect x="14" y="1" width="7" height="6" />
-                <rect x="14" y="11" width="7" height="12" />
-              </svg>
-              <span className="ml-2 text-xl font-bold tracking-wide text-gray-900 uppercase">
-                Company
-              </span>
+                          <Image
+                            src="./alkmy.svg"
+                            alt={"alkmy"}
+                            width={120} // Set your desired width
+                            height={50} // Set your desired height
+                            priority // Add priority if it's above-the-fold (like in a header)
+                          />
             </a>
             <div className="mt-4 lg:max-w-sm">
               <p className="text-sm text-gray-600">

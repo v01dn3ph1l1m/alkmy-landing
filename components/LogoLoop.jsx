@@ -1,14 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
+import { useCallback, useMemo, useRef, useState, memo } from 'react';
 import './LogoLoop.css';
+import { useGSAP } from '@gsap/react';
 
 const ANIMATION_CONFIG = { SMOOTH_TAU: 0.25, MIN_COPIES: 2, COPY_HEADROOM: 2 };
 
 const toCssLength = value => (typeof value === 'number' ? `${value}px` : (value ?? undefined));
 
 const useResizeObserver = (callback, elements, dependencies) => {
-  useEffect(() => {
+  useGSAP(() => {
     if (!window.ResizeObserver) {
       const handleResize = () => callback();
       window.addEventListener('resize', handleResize);
@@ -29,7 +30,7 @@ const useResizeObserver = (callback, elements, dependencies) => {
 };
 
 const useImageLoader = (seqRef, onLoad, dependencies) => {
-  useEffect(() => {
+  useGSAP(() => {
     const images = seqRef.current?.querySelectorAll('img') ?? [];
     if (images.length === 0) {
       onLoad();
@@ -64,7 +65,7 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
   const offsetRef = useRef(0);
   const velocityRef = useRef(0);
 
-  useEffect(() => {
+  useGSAP(() => {
     const track = trackRef.current;
     if (!track) return;
 
@@ -172,7 +173,7 @@ export const LogoLoop = memo(
 
     // Update refs on every render using useLayoutEffect to ensure they are up-to-date before effects run
     // Using useLayoutEffect ensures we capture the value synchronously after render but before paint/effects
-    useEffect(() => {
+    useGSAP(() => {
       seqWidthRef.current = seqWidth;
       seqHeightRef.current = seqHeight;
       copyCountRef.current = copyCount;
