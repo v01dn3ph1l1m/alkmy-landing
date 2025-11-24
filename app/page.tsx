@@ -376,7 +376,7 @@ export default function ScrollSnapPage() {
               displayOverlayContent={true}
               overlayContent={
                 <div className="w-full h-full bg-[#0f1117] rounded-[20px] p-6 border border-slate-800 shadow-2xl flex flex-col justify-between relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/50 via-purple-500/50 to-blue-500/50" />
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/50 via-yellow-500/50 to-red-500/50" />
                   
                   <div className="flex justify-between items-start mb-4">
                     <div>
