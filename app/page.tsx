@@ -45,7 +45,7 @@ const SolutionsSection = () => {
       title: "The Roadmap Architect",
       subtitle: "For Product Managers",
       tagline: "Ship with certainty.",
-      desc: "Stop fighting for resources based on 'I think'. Walk into the meeting with 'The data says'. Alkmy ranks every request by potential revenue impact.",
+      desc: "Stop fighting for resources based on 'I think'. Walk into the meeting with 'The data says'. Alkmy ranks every request as per your business needs!",
       stats: [
         { label: "Planning Time", val: "-80%" },
         { label: "Feature Adoption", val: "+45%" }
@@ -79,7 +79,7 @@ const SolutionsSection = () => {
   return (
     <div className="max-w-7xl mx-auto w-full">
       
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 mx-4">
          <div>
            <div className="text-indigo-500 font-mono text-sm font-bold uppercase tracking-widest mb-2">Intelligence Suite</div>
            <h2 className="text-4xl md:text-5xl font-bold text-white">Three lenses.<br/>One source of truth.</h2>
@@ -104,7 +104,7 @@ const SolutionsSection = () => {
       </div>
 
       {/* Feature Display */}
-      <div className="rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+      <div className="rounded-3xl border border-white/10 overflow-hidden shadow-2xl  mx-4">
          <div className="grid md:grid-cols-12 min-h-[500px]">
             
             {/* Visual Side (Left) */}
