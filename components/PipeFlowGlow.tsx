@@ -1,11 +1,8 @@
 "use client";
 
-import React, { useState, JSX, useRef, useMemo } from "react";
+import React, { useState, JSX, useRef, useMemo, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
-import {
-  Lightbulb,
-  Sparkles,
-} from "lucide-react";
+import { Lightbulb, Sparkles } from "lucide-react";
 import {
   FaReddit,
   FaAppStore,
@@ -25,11 +22,11 @@ const ICONS: Record<string, (props: any) => JSX.Element> = {
 
 // Map of colors for easy reference
 const COLOR_MAP = {
-  purple: { bg: "bg-purple-500", glow: "shadow-purple-500/70", hex: "#a855f7" },
-  blue: { bg: "bg-blue-500", glow: "shadow-blue-500/70", hex: "#3b82f6" },
-  green: { bg: "bg-green-500", glow: "shadow-green-500/70", hex: "#22c55e" },
-  yellow: { bg: "bg-yellow-500", glow: "shadow-yellow-500/70", hex: "#eab308" },
-  red: { bg: "bg-red-500", glow: "shadow-red-500/70", hex: "#ef4444" },
+  purple: { bg: "bg-purple-500", hex: "#a855f7" },
+  blue: { bg: "bg-blue-500", hex: "#3b82f6" },
+  green: { bg: "bg-green-500", hex: "#22c55e" },
+  yellow: { bg: "bg-yellow-500", hex: "#eab308" },
+  red: { bg: "bg-red-500", hex: "#ef4444" },
 } as const;
 
 // Dimensions for the vertical layout
@@ -37,9 +34,10 @@ const VIEW_WIDTH = 600;
 const VIEW_HEIGHT = 800;
 const CENTER_X = 300;
 const CENTER_Y = 400;
+const CENTER_BOX_SIZE = 52;
+const CENTER_BOX_HALF = 26;
 
 // Define the static paths (Vertical Flow)
-// Start at y=0, converge to (300, 400)
 const staticPaths = [
   {
     id: "path-1",
@@ -74,10 +72,9 @@ const staticPaths = [
 ];
 
 // Path for the outgoing "insight" (Vertical)
-// Starts from center bottom (400 + 26) to bottom (800)
 const insightPath = {
   id: "path-insight",
-  d: "M 300 426 L 300 800",
+  d: `M 300 ${CENTER_Y + CENTER_BOX_HALF} L 300 ${VIEW_HEIGHT}`,
 };
 
 type AnimatedPath = (typeof staticPaths)[number] & {
@@ -86,6 +83,127 @@ type AnimatedPath = (typeof staticPaths)[number] & {
   color: (typeof COLOR_MAP)[keyof typeof COLOR_MAP];
 };
 
+// Static keyframe styles (never change)
+const STATIC_KEYFRAME_STYLES = `
+  /* Edge fade for the entire SVG (lines) - Vertical */
+  .edge-fade-mask {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 5%,
+      black 85%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 5%,
+      black 85%,
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* Animation for the "pulse" effect on the INCOMING lines (Vertical) */
+  @keyframes slideMask {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* Animation for the "pulse" effect on the OUTGOING line (Vertical) */
+  @keyframes slideMaskInsight {
+    0% {
+      transform: translateY(${CENTER_BOX_HALF}px);
+    }
+    100% {
+      transform: translateY(${CENTER_Y}px);
+    }
+  }
+
+  /* Base class for INCOMING mask rectangles */
+  .mask-rect {
+    animation: slideMask 4s ease-in-out infinite;
+    animation-play-state: paused;
+    animation-fill-mode: backwards;
+    will-change: transform;
+  }
+
+  /* Specific class for the OUTGOING insight mask */
+  .mask-rect-insight {
+    animation: slideMaskInsight 5s ease-in-out infinite;
+    animation-play-state: paused;
+    animation-fill-mode: backwards;
+    will-change: transform;
+  }
+
+  .mask-rect.running,
+  .mask-rect-insight.running {
+    animation-play-state: running;
+  }
+
+  /* Animation for the incoming icons (maintains color) */
+  @keyframes move-on-path {
+    0% {
+      offset-distance: 0%;
+      opacity: 1;
+      transform: scale(1.8);
+    }
+    10% {
+      opacity: 1;
+    }
+    95% {
+      offset-distance: 100%;
+      transform: scale(0.5);
+    }
+    100% {
+      offset-distance: 100%;
+      transform: scale(0);
+      opacity: 1;
+    }
+  }
+
+  /* Animation for the outgoing "insight" */
+  @keyframes move-insight {
+    0% {
+      offset-distance: 0%;
+      opacity: 1;
+      transform: scale(1);
+    }
+    30% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+`;
+
+// Particle component for better performance
+const Particle = React.memo(({ path }: { path: AnimatedPath }) => {
+  const Icon = ICONS[path.icon];
+  return (
+    <div
+      className={`particle-${path.id} absolute w-7 h-7 ${path.color.bg} flex items-center justify-center rounded-full opacity-0`}
+      style={{
+        top: 0,
+        left: 0,
+        boxShadow: `0 0 20px 4px ${path.color.hex}70`,
+      }}
+    >
+      <Icon className="w-4 h-4 text-white rotate-270" />
+    </div>
+  );
+});
+Particle.displayName = "Particle";
+
 export default function AppHero() {
   const [animatedPaths, setAnimatedPaths] = useState<AnimatedPath[]>([]);
   const [animateLines, setAnimateLines] = useState(false);
@@ -93,6 +211,26 @@ export default function AppHero() {
   const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Memoize the resize handler
+  const handleResize = useCallback(() => {
+    if (containerRef.current) {
+      const parent = containerRef.current.parentElement;
+      if (parent) {
+        const availableWidth = parent.clientWidth;
+        const availableHeight = parent.clientHeight;
+
+        // Scale based on both width and height
+        // Add padding (32px horizontal, 64px vertical for py-8)
+        const widthScale = Math.min(1, (availableWidth - 32) / VIEW_WIDTH);
+        const heightScale = Math.min(1, (availableHeight - 64) / VIEW_HEIGHT);
+
+        // Use the smaller of the two to ensure it fits
+        setScale(Math.min(widthScale, heightScale));
+      }
+    }
+  }, []);
+
+  // Combined GSAP hook for initialization and resize
   useGSAP(() => {
     // Generate random durations and delays only on the client
     const newPaths: AnimatedPath[] = staticPaths.map((path) => {
@@ -109,158 +247,29 @@ export default function AppHero() {
     setAnimatedPaths(newPaths);
 
     // Compute when the first particle roughly reaches the center
-    if (newPaths.length > 0) {
-      const firstArrival = Math.min(
-        ...newPaths.map((p) => p.delay + 0.95 * p.duration)
-      );
-      setInsightDelay(firstArrival);
-    }
+    const firstArrival = Math.min(
+      ...newPaths.map((p) => p.delay + 0.95 * p.duration)
+    );
+    setInsightDelay(firstArrival);
 
     // Start line animations on the next frame to avoid mid‑cycle glitch
-    const id = requestAnimationFrame(() => setAnimateLines(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
+    const animId = requestAnimationFrame(() => setAnimateLines(true));
 
-  // Handle Responsive Scaling
-    useGSAP(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const parent = containerRef.current.parentElement;
-        if (parent) {
-          const availableWidth = parent.clientWidth;
-          const availableHeight = parent.clientHeight;
-          
-          // Scale based on both width and height
-          // Add padding (32px horizontal, 64px vertical for py-8)
-          const widthScale = Math.min(1, (availableWidth - 32) / VIEW_WIDTH);
-          const heightScale = Math.min(1, (availableHeight - 64) / VIEW_HEIGHT);
-          
-          // Use the smaller of the two to ensure it fits
-          setScale(Math.min(widthScale, heightScale));
-        }
-      }
-    };
-
-    // Initial check
+    // Initial resize check
     handleResize();
 
+    // Add resize listener
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  // Memoize styles to prevent re-calculation on every render
-  const styles = useMemo(() => {
-    const keyframeStyles = `
-      /* Edge fade for the entire SVG (lines) - Vertical */
-      .edge-fade-mask {
-        -webkit-mask-image: linear-gradient(
-          to bottom,
-          transparent 0%,
-          black 5%,
-          black 85%,
-          transparent 100%
-        );
-        mask-image: linear-gradient(
-          to bottom,
-          transparent 0%,
-          black 5%,
-          black 85%,
-          transparent 100%
-        );
-        -webkit-mask-repeat: no-repeat;
-        mask-repeat: no-repeat;
-      }
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
 
-      /* Animation for the "pulse" effect on the INCOMING lines (Vertical) */
-      @keyframes slideMask {
-        0% {
-          transform: translateY(-100%);
-        }
-        100% {
-          transform: translateY(100%);
-        }
-      }
-
-      /* Animation for the "pulse" effect on the OUTGOING line (Vertical) */
-      @keyframes slideMaskInsight {
-        0% {
-          transform: translateY(26px);
-        }
-        100% {
-          transform: translateY(400px);
-        }
-      }
-
-      /* Base class for INCOMING mask rectangles */
-      .mask-rect {
-        animation: slideMask 4s ease-in-out infinite;
-        animation-play-state: paused;
-        animation-fill-mode: backwards;
-        will-change: transform;
-      }
-
-      /* Specific class for the OUTGOING insight mask */
-      .mask-rect-insight {
-        animation: slideMaskInsight 5s ease-in-out infinite;
-        animation-play-state: paused;
-        animation-fill-mode: backwards;
-        will-change: transform;
-      }
-
-      .mask-rect.running,
-      .mask-rect-insight.running {
-        animation-play-state: running;
-      }
-
-      /* Animation for the incoming icons (maintains color) */
-      @keyframes move-on-path {
-        0% {
-          offset-distance: 0%;
-          opacity: 1;
-          transform: scale(1.8);
-        }
-        10% {
-          opacity: 1;
-        }
-        95% {
-          offset-distance: 100%;
-          transform: scale(0.5);
-        }
-        100% {
-          offset-distance: 100%;
-          transform: scale(0);
-          opacity: 1;
-        }
-      }
-
-      /* Animation for the outgoing "insight" */
-      @keyframes move-insight {
-        0% {
-          offset-distance: 0%;
-          opacity: 1;
-          transform: scale(1);
-        }
-        30% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        100% {
-          offset-distance: 100%;
-          opacity: 0;
-          transform: scale(0);
-        }
-      }
-
-      /* Class for the insight particle */
-      .particle-insight {
-        offset-path: path("${insightPath.d}");
-        animation: move-insight 5s ease-in-out infinite;
-        animation-delay: ${insightDelay ?? 9999}s;
-        will-change: transform, opacity, offset-distance;
-      }
-    `;
-
-    const dynamicStyles = animatedPaths
+  // Memoize dynamic styles to prevent re-calculation on every render
+  const dynamicStyles = useMemo(() => {
+    const particleStyles = animatedPaths
       .map(
         (path) => `
         .particle-${path.id} {
@@ -268,68 +277,106 @@ export default function AppHero() {
           animation: move-on-path ${path.duration}s ease-in infinite;
           animation-delay: ${path.delay}s;
           will-change: transform, opacity, offset-distance;
-        }
-      `
+        }`
       )
       .join("\n");
 
-    return keyframeStyles + dynamicStyles;
+    const insightStyle = `
+      .particle-insight {
+        offset-path: path("${insightPath.d}");
+        animation: move-insight 5s ease-in-out infinite;
+        animation-delay: ${insightDelay ?? 9999}s;
+        will-change: transform, opacity, offset-distance;
+      }`;
+
+    return STATIC_KEYFRAME_STYLES + particleStyles + insightStyle;
   }, [animatedPaths, insightDelay]);
+
+  // Memoize container styles
+  const containerStyle = useMemo(
+    () => ({
+      width: `${VIEW_WIDTH * scale}px`,
+      height: `${VIEW_HEIGHT * scale}px`,
+    }),
+    [scale]
+  );
+
+  const innerWrapperStyle = useMemo(
+    () => ({
+      transform: `scale(${scale})`,
+      transformOrigin: "top left",
+      width: `${VIEW_WIDTH}px`,
+      height: `${VIEW_HEIGHT}px`,
+    }),
+    [scale]
+  );
+
+  const centralBoxStyle = useMemo(
+    () => ({
+      top: `${CENTER_Y - CENTER_BOX_HALF}px`,
+      left: `${CENTER_X - CENTER_BOX_HALF}px`,
+      width: `${CENTER_BOX_SIZE}px`,
+      height: `${CENTER_BOX_SIZE}px`,
+    }),
+    []
+  );
+
+  const runningClass = animateLines ? "running" : "";
 
   return (
     <div className="relative flex items-center justify-center w-full min-h-screen py-8 text-white -mt-64 md:mt-0">
       {/* Inject all styles */}
-      <style>{styles}</style>
+      <style>{dynamicStyles}</style>
 
       {/* Main container for the visualization - Scaled for responsiveness */}
-      <div
-        ref={containerRef}
-        className="relative mx-auto"
-        style={{
-          width: `${VIEW_WIDTH * scale}px`,
-          height: `${VIEW_HEIGHT * scale}px`,
-        }}
-      >
+      <div ref={containerRef} className="relative mx-auto" style={containerStyle}>
         {/* Inner wrapper that contains everything at base size, then scales */}
-        <div
-          className="absolute top-0 left-0 w-full h-full"
-          style={{
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            width: `${VIEW_WIDTH}px`,
-            height: `${VIEW_HEIGHT}px`,
-          }}
-        >
-        {/* SVG + lines, wrapped in edge fade mask */}
-        <div className="absolute inset-0 edge-fade-mask pointer-events-none">
-          <svg
-            viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
-            className="w-full h-full"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ willChange: "transform" }} 
-          >
-            <defs>
-              {/* Single white pulse gradient used by all masks (Vertical) */}
-              <linearGradient
-                id="pulse-gradient"
-                x1="50%"
-                y1="0%"
-                x2="50%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor="white" stopOpacity="0" />
-                <stop offset="40%" stopColor="white" stopOpacity="0" />
-                <stop offset="50%" stopColor="white" stopOpacity="1" />
-                <stop offset="60%" stopColor="white" stopOpacity="0" />
-                <stop offset="100%" stopColor="white" stopOpacity="0" />
-              </linearGradient>
+        <div className="absolute top-0 left-0 w-full h-full" style={innerWrapperStyle}>
+          {/* SVG + lines, wrapped in edge fade mask */}
+          <div className="absolute inset-0 edge-fade-mask pointer-events-none">
+            <svg
+              viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+              className="w-full h-full"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ willChange: "transform" }}
+            >
+              <defs>
+                {/* Single white pulse gradient used by all masks (Vertical) */}
+                <linearGradient id="pulse-gradient" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <stop offset="0%" stopColor="white" stopOpacity="0" />
+                  <stop offset="40%" stopColor="white" stopOpacity="0" />
+                  <stop offset="50%" stopColor="white" stopOpacity="1" />
+                  <stop offset="60%" stopColor="white" stopOpacity="0" />
+                  <stop offset="100%" stopColor="white" stopOpacity="0" />
+                </linearGradient>
 
-              {/* One mask per path */}
-              {animatedPaths.map((path) => (
+                {/* One mask per path */}
+                {animatedPaths.map((path) => (
+                  <mask
+                    key={path.id}
+                    id={`pulse-mask-${path.id}`}
+                    maskUnits="userSpaceOnUse"
+                    x={0}
+                    y={0}
+                    width={VIEW_WIDTH}
+                    height={VIEW_HEIGHT}
+                  >
+                    <rect
+                      className={`mask-rect ${runningClass}`}
+                      style={{ animationDelay: `${path.delay}s` }}
+                      x="0"
+                      y="0"
+                      width={VIEW_WIDTH}
+                      height={VIEW_HEIGHT}
+                      fill="url(#pulse-gradient)"
+                    />
+                  </mask>
+                ))}
+
+                {/* Mask for the yellow insight pulse */}
                 <mask
-                  key={`mask-${path.id}`}
-                  id={`pulse-mask-${path.id}`}
+                  id="pulse-mask-insight"
                   maskUnits="userSpaceOnUse"
                   x={0}
                   y={0}
@@ -337,8 +384,8 @@ export default function AppHero() {
                   height={VIEW_HEIGHT}
                 >
                   <rect
-                    className={`mask-rect ${animateLines ? "running" : ""}`}
-                    style={{ animationDelay: `${path.delay}s` }}
+                    className={`mask-rect-insight ${runningClass}`}
+                    style={{ animationDelay: `${insightDelay ?? 9999}s` }}
                     x="0"
                     y="0"
                     width={VIEW_WIDTH}
@@ -346,123 +393,75 @@ export default function AppHero() {
                     fill="url(#pulse-gradient)"
                   />
                 </mask>
-              ))}
+              </defs>
 
-              {/* Mask for the yellow insight pulse */}
-              <mask
-                id="pulse-mask-insight"
-                maskUnits="userSpaceOnUse"
-                x={0}
-                y={0}
-                width={VIEW_WIDTH}
-                height={VIEW_HEIGHT}
-              >
-                <rect
-                  className={`mask-rect-insight ${
-                    animateLines ? "running" : ""
-                  }`}
-                  style={{
-                    animationDelay: `${insightDelay ?? 9999}s`,
-                  }}
-                  x="0"
-                  y="0"
-                  width={VIEW_WIDTH}
-                  height={VIEW_HEIGHT}
-                  fill="url(#pulse-gradient)"
-                />
-              </mask>
-            </defs>
-
-            {/* Group 1: Static background paths (dim white) */}
-            <g>
-              {animatedPaths.map((path) => (
+              {/* Group 1: Static background paths (dim white) */}
+              <g>
+                {animatedPaths.map((path) => (
+                  <path
+                    key={path.id}
+                    d={path.d}
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeOpacity="0.1"
+                  />
+                ))}
                 <path
-                  key={`bg-${path.id}`}
-                  d={path.d}
+                  d={insightPath.d}
                   stroke="white"
                   strokeWidth="1.5"
                   strokeOpacity="0.1"
                 />
-              ))}
-              <path
-                d={insightPath.d}
-                stroke="white"
-                strokeWidth="1.5"
-                strokeOpacity="0.1"
-              />
-            </g>
+              </g>
 
-            {/* Group 2: Colored, masked pulse lines */}
-            <g>
-              {animatedPaths.map((path) => (
+              {/* Group 2: Colored, masked pulse lines */}
+              <g>
+                {animatedPaths.map((path) => (
+                  <path
+                    key={path.id}
+                    d={path.d}
+                    stroke={path.color.hex}
+                    strokeWidth="1.5"
+                    strokeOpacity="0.8"
+                    mask={`url(#pulse-mask-${path.id})`}
+                  />
+                ))}
+                {/* The yellow insight pulse */}
                 <path
-                  key={`pulse-${path.id}`}
-                  d={path.d}
-                  stroke={path.color.hex}
+                  d={insightPath.d}
+                  stroke="#fde047"
                   strokeWidth="1.5"
                   strokeOpacity="0.8"
-                  mask={`url(#pulse-mask-${path.id})`}
+                  mask="url(#pulse-mask-insight)"
                 />
-              ))}
-              {/* The yellow insight pulse */}
-              <path
-                d={insightPath.d}
-                stroke="#fde047"
-                strokeWidth="1.5"
-                strokeOpacity="0.8"
-                mask="url(#pulse-mask-insight)"
-              />
-            </g>
-          </svg>
-        </div>
+              </g>
+            </svg>
+          </div>
 
-        {/* 2. The Animated Particles (HTML divs) */}
-        {animatedPaths.map((path) => {
-          const Icon = ICONS[path.icon];
-          return (
-            <div
-              key={path.id}
-              className={`particle-${path.id} absolute w-7 h-7 ${path.color.bg}
-                          flex items-center justify-center rounded-full opacity-0`}
-              style={{ 
-                top: 0, 
-                left: 0,
-                boxShadow: `0 0 20px 4px ${path.color.hex}70`
-              }}
-            >
-              <Icon className="w-4 h-4 text-white rotate-270" />
-            </div>
-          );
-        })}
+          {/* The Animated Particles (HTML divs) */}
+          {animatedPaths.map((path) => (
+            <Particle key={path.id} path={path} />
+          ))}
 
-        {/* The outgoing "Insight" particle */}
-        <div
-          className="particle-insight absolute w-5 h-5 bg-yellow-300 
-                     rounded-full flex items-center justify-center opacity-0"
-          style={{ 
-            top: 0, 
-            left: 0,
-            boxShadow: '0 0 20px 4px rgba(253, 224, 71, 0.7)'
-          }}
-        >
-          <Sparkles className="w-3 h-3 text-yellow-900" />
-        </div>
+          {/* The outgoing "Insight" particle */}
+          <div
+            className="particle-insight absolute w-5 h-5 bg-yellow-300 rounded-full flex items-center justify-center opacity-0"
+            style={{
+              top: 0,
+              left: 0,
+              boxShadow: "0 0 20px 4px rgba(253, 224, 71, 0.7)",
+            }}
+          >
+            <Sparkles className="w-3 h-3 text-yellow-900" />
+          </div>
 
-        {/* 3. The Central Box */}
-        <div
-          className="absolute z-10 border rounded-xl 
-                     border-white/20 bg-gray-800/50 backdrop-blur-md
-                     shadow-2xl
-                     flex items-center justify-center"
-          style={{
-            top: `${CENTER_Y - 26}px`,
-            left: `${CENTER_X - 26}px`,
-            width: "52px",
-            height: "52px",
-          }}
-        >
-          <Lightbulb className="w-7 h-7 text-yellow-300" />
-        </div>
+          {/* The Central Box */}
+          <div
+            className="absolute z-10 border rounded-xl border-white/20 bg-gray-800/50 backdrop-blur-md shadow-2xl flex items-center justify-center"
+            style={centralBoxStyle}
+          >
+            <Lightbulb className="w-7 h-7 text-yellow-300" />
+          </div>
         </div>
       </div>
     </div>
