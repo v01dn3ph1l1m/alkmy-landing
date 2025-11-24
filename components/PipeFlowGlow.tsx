@@ -3,22 +3,24 @@
 import React, { useState, JSX, useRef, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
 import {
-  Brain,
-  BarChart,
-  FileText,
-  Database,
-  Code,
   Lightbulb,
   Sparkles,
 } from "lucide-react";
+import {
+  FaReddit,
+  FaAppStore,
+  FaGooglePlay,
+  FaYoutube,
+  FaInstagram,
+} from "react-icons/fa";
 
 // A map of icons to use for the animation
 const ICONS: Record<string, (props: any) => JSX.Element> = {
-  brain: (props) => <Brain {...props} />,
-  chart: (props) => <BarChart {...props} />,
-  file: (props) => <FileText {...props} />,
-  db: (props) => <Database {...props} />,
-  code: (props) => <Code {...props} />,
+  reddit: (props) => <FaReddit {...props} />,
+  appstore: (props) => <FaAppStore {...props} />,
+  playstore: (props) => <FaGooglePlay {...props} />,
+  youtube: (props) => <FaYoutube {...props} />,
+  instagram: (props) => <FaInstagram {...props} />,
 };
 
 // Map of colors for easy reference
@@ -42,32 +44,32 @@ const staticPaths = [
   {
     id: "path-1",
     d: "M 100 0 Q 200 200 300 400",
-    icon: "brain",
-    colorKey: "purple" as const,
+    icon: "reddit",
+    colorKey: "yellow" as const,
   },
   {
     id: "path-2",
     d: "M 200 0 Q 250 200 300 400",
-    icon: "chart",
+    icon: "appstore",
     colorKey: "blue" as const,
   },
   {
     id: "path-3",
     d: "M 300 0 Q 300 200 300 400",
-    icon: "file",
+    icon: "playstore",
     colorKey: "green" as const,
   },
   {
     id: "path-4",
     d: "M 400 0 Q 350 200 300 400",
-    icon: "db",
-    colorKey: "yellow" as const,
+    icon: "youtube",
+    colorKey: "red" as const,
   },
   {
     id: "path-5",
     d: "M 500 0 Q 400 200 300 400",
-    icon: "code",
-    colorKey: "red" as const,
+    icon: "instagram",
+    colorKey: "purple" as const,
   },
 ];
 
@@ -214,8 +216,8 @@ export default function AppHero() {
       @keyframes move-on-path {
         0% {
           offset-distance: 0%;
-          opacity: 0;
-          transform: scale(1);
+          opacity: 1;
+          transform: scale(1.8);
         }
         10% {
           opacity: 1;
@@ -223,12 +225,11 @@ export default function AppHero() {
         95% {
           offset-distance: 100%;
           transform: scale(0.5);
-          opacity: 0;
         }
         100% {
           offset-distance: 100%;
-          opacity: 0;
           transform: scale(0);
+          opacity: 1;
         }
       }
 
