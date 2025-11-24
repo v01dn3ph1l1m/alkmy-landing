@@ -141,7 +141,7 @@ const CardNav = ({
     <div className={`card-nav-container ${className}`}>
       <nav
         ref={navRef}
-        className={`card-nav ${isExpanded ? "open" : ""}`}
+        className={`card-nav backdrop-blur-md ${isExpanded ? "open" : ""}`}
         style={{ backgroundColor: baseColor }}
       >
         <div className="card-nav-top">

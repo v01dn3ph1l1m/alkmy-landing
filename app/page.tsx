@@ -461,7 +461,7 @@ export default function ScrollSnapPage() {
         <CardNav
           logoAlt="Alkmy AI"
           items={items}
-          baseColor="#ffffff"
+          baseColor="#ffffff40"
           menuColor="black"
           buttonBgColor="black"
           buttonTextColor="white"
