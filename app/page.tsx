@@ -1,28 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Ghost, Search, AlertTriangle, MessageSquare, LayoutGrid, Eye, EyeOff, BanknoteArrowUp } from "lucide-react";
+import { ArrowRight, Ghost, Search, AlertTriangle, MessageSquare, LayoutGrid, Eye, EyeOff, BanknoteArrowUp, Zap } from "lucide-react";
 import Prism from "../components/Prism";
 import TiltedCard from "../components/TiltedCard";
 import LightRays from "../components/LightRays";
-import CurvedLoop from "../components/CurvedLoop";
 import AppHero from "../components/PipeFlowGlow";
 import CardNav from "../components/CardNav";
 import MagicBento from "../components/MagicBento";
 import { Footer } from "../components/Footer";
-import CardSwap, { Card } from "../components/CardSwap";
-import ScrollStack, { ScrollStackItem } from "../components/ScrollStack";
-import { Zap } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
-  SiZendesk, SiReddit, SiApple, SiGoogleplay, SiX, SiDiscord, SiIntercom, 
+  SiZendesk, SiReddit, SiApple, SiGoogleplay, SiX, SiDiscord, 
   SiSalesforce, SiHubspot, SiGithub, SiTrustpilot, SiTypeform, SiYoutube, 
   SiTiktok, SiInstagram, SiWhatsapp, SiGmail,
-  SiJira, SiSlack, SiLinear, SiAsana, SiTrello, 
+  SiJira, SiSlack, SiAsana, SiTrello, 
   SiNotion, SiClickup, SiGitlab, SiAirtable, SiGooglesheets, 
   SiDatadog, SiSnowflake
 } from 'react-icons/si';
-import LogoLoop from "../components/LogoLoop";
 
 const MockBar = ({ label, width, color }: { label: string, width: string, color: string }) => (
   <div className="group/bar">
@@ -202,8 +197,6 @@ const SolutionsSection = () => {
   );
 };
 
-const LogosSection = () => {
-
 const integrations = [
   { node: <SiApple />, title: "App Store", color: "text-gray-300" },
   { node: <SiGoogleplay />, title: "Google Play", color: "text-green-400" },
@@ -224,33 +217,15 @@ const integrations = [
     { node: <SiAsana />, title: "Asana", color: "text-red-400" },
   { node: <SiTrello />, title: "Trello", color: "text-blue-400" },
   { node: <SiNotion />, title: "Notion", color: "text-white" },
+  { node: <SiWhatsapp />, title: "Whatsapp", color: "text-green-400" },
   { node: <SiClickup />, title: "ClickUp", color: "text-purple-500" },
   { node: <SiGithub />, title: "GitHub Issues", color: "text-white" },
   { node: <SiGitlab />, title: "GitLab", color: "text-orange-500" },
-
   { node: <SiAirtable />, title: "Airtable", color: "text-yellow-400" },
   { node: <SiGooglesheets />, title: "Sheets", color: "text-green-500" },
   { node: <SiDatadog />, title: "Datadog", color: "text-purple-600" },
   { node: <SiSnowflake />, title: "Snowflake", color: "text-blue-300" },
 ];
-
-  return (
-    <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
-      <LogoLoop
-        logos={integrations}
-        speed={120}
-        direction="left"
-        logoHeight={48}
-        gap={40}
-        hoverSpeed={10}
-        scaleOnHover={false}
-        fadeOut={true}
-        fadeOutColor="#ffd748bc"
-        ariaLabel="Integrations"
-      />
-    </div>
-  );
-}
 
 
 export default function ScrollSnapPage() {
