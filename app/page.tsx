@@ -1,13 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
+import dynamic from "next/dynamic";
 import { ArrowRight, Ghost, AlertTriangle, MessageSquare, LayoutGrid, Eye, EyeOff, BanknoteArrowUp, Zap } from "lucide-react";
-import Prism from "../components/Prism";
-import TiltedCard from "../components/TiltedCard";
-import LightRays from "../components/LightRays";
-import AppHero from "../components/PipeFlowGlow";
 import CardNav from "../components/CardNav";
-import MagicBento from "../components/MagicBento";
 import { Footer } from "../components/Footer";
 import { motion, AnimatePresence } from "motion/react";
 import { 
@@ -18,9 +14,16 @@ import {
   SiNotion, SiClickup, SiGitlab, SiAirtable, SiGooglesheets, 
   SiDatadog, SiSnowflake
 } from 'react-icons/si';
-import ProcessFlow from "../components/ProcessFlow";
 
-const MockBar = ({ label, width, color }: { label: string, width: string, color: string }) => (
+// Dynamically import heavy components to reduce initial bundle size and main thread blocking
+const Prism = dynamic(() => import("../components/Prism"), { ssr: false });
+const TiltedCard = dynamic(() => import("../components/TiltedCard"), { ssr: false });
+const LightRays = dynamic(() => import("../components/LightRays"), { ssr: false });
+const AppHero = dynamic(() => import("../components/PipeFlowGlow"), { ssr: false });
+const MagicBento = dynamic(() => import("../components/MagicBento"), { ssr: false });
+const ProcessFlow = dynamic(() => import("../components/ProcessFlow"), { ssr: false });
+
+const MockBar = memo(({ label, width, color }: { label: string, width: string, color: string }) => (
   <div className="group/bar">
     <div className="flex justify-between text-[10px] text-slate-400 mb-1">
       <span>{label}</span>
@@ -35,9 +38,10 @@ const MockBar = ({ label, width, color }: { label: string, width: string, color:
       />
     </div>
   </div>
-);
+));
+MockBar.displayName = "MockBar";
 
-const SolutionsSection = () => {
+const SolutionsSection = memo(() => {
   const [activeTab, setActiveTab] = useState<'pm' | 'ceo' | 'comp'>('pm');
 
   const content = {
@@ -47,8 +51,8 @@ const SolutionsSection = () => {
       tagline: "Ship with certainty.",
       desc: "Stop fighting for resources based on 'I think'. Walk into the meeting with 'The data says'. Alkmy ranks every request as per your business needs!",
       stats: [
-        { label: "Planning Time", val: "-80%" },
-        { label: "Feature Adoption", val: "+45%" }
+        { label: "Planning Time", val: "Reduce" },
+        { label: "Feature Adoption", val: "Improve" }
       ],
       gradient: "from-blue-500 to-indigo-600"
     },
@@ -58,8 +62,8 @@ const SolutionsSection = () => {
       tagline: "Unfiltered truth.",
       desc: "Middle management sanitizes the bad news. Alkmy gives you the raw, unfiltered pulse of your business. See the fires before they burn the house down.",
       stats: [
-        { label: "Churn Prediction", val: "92%" },
-        { label: "Crisis Alerts", val: "Real-time" }
+        { label: "Bird's Eye View", val: "Real-time" },
+        { label: "Crisis Alerts", val: "Smart" }
       ],
       gradient: "from-violet-500 to-fuchsia-600"
     },
@@ -69,8 +73,8 @@ const SolutionsSection = () => {
       tagline: "Offensive intelligence.",
       desc: "Your competitor's unhappy users are your best leads. We track their crashes, their pricing complaints, and their missing features so you can steal their market share.",
       stats: [
-        { label: "Competitor Insights", val: "Live" },
-        { label: "Opportunity Score", val: "High" }
+        { label: "Competitor Insights", val: "Intelligence" },
+        { label: "Opportunity Score", val: "Validated" }
       ],
       gradient: "from-rose-500 to-orange-600"
     }
@@ -196,7 +200,8 @@ const SolutionsSection = () => {
 
     </div>
   );
-};
+});
+SolutionsSection.displayName = "SolutionsSection";
 
 const integrations = [
   { node: <SiApple />, title: "App Store", color: "text-gray-300" },
@@ -230,32 +235,32 @@ const integrations = [
 
 
 export default function ScrollSnapPage() {
-  const [activeSection, setActiveSection] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  // const [activeSection, setActiveSection] = useState(0);
+  // const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  // useEffect(() => {
+  //   const container = containerRef.current;
+  //   if (!container) return;
 
-    const handleScroll = () => {
-      const scrollPosition = container.scrollTop;
-      const sectionHeight = window.innerHeight;
-      const currentSection = Math.round(scrollPosition / sectionHeight);
-      setActiveSection(currentSection);
-    };
+  //   const handleScroll = () => {
+  //     const scrollPosition = container.scrollTop;
+  //     const sectionHeight = window.innerHeight;
+  //     const currentSection = Math.round(scrollPosition / sectionHeight);
+  //     setActiveSection(currentSection);
+  //   };
 
-    container.addEventListener("scroll", handleScroll);
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   container.addEventListener("scroll", handleScroll);
+  //   return () => container.removeEventListener("scroll", handleScroll);
+  // }, []);
 
-  const scrollToSection = (index: number) => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: index * window.innerHeight,
-        behavior: "smooth",
-      });
-    }
-  };
+  // const scrollToSection = (index: number) => {
+  //   if (containerRef.current) {
+  //     containerRef.current.scrollTo({
+  //       top: index * window.innerHeight,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // };
 
   const items = [
     {
@@ -292,7 +297,7 @@ export default function ScrollSnapPage() {
     <>
       <div
         className="snap-container bg-gradient-to-br from-slate-900 to-slate-800 text-white"
-        ref={containerRef}
+        // ref={containerRef}
       >
         <CardNav
           logoAlt="Alkmy AI"
@@ -431,7 +436,7 @@ export default function ScrollSnapPage() {
               of the internet into clear, actionable product intelligence.
             </p>
             <button
-              onClick={() => scrollToSection(1)}
+              onClick={() => {}}
               className="px-8 py-3 bg-accent text-accent-foreground rounded-full font-semibold hover:shadow-lg hover:shadow-accent/50 transition-all duration-300 animate-fade-in-up stagger-2"
             >
               Know More
