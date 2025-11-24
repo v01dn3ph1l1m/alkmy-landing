@@ -422,12 +422,15 @@ export default function AppHero() {
           return (
             <div
               key={path.id}
-              className={`particle-${path.id} absolute w-7 h-7 ${path.color.bg} ${path.color.glow}
-                          flex items-center justify-center rounded-full 
-                          shadow-lg opacity-0`}
-              style={{ top: 0, left: 0 }}
+              className={`particle-${path.id} absolute w-7 h-7 ${path.color.bg}
+                          flex items-center justify-center rounded-full opacity-0`}
+              style={{ 
+                top: 0, 
+                left: 0,
+                boxShadow: `0 0 20px 4px ${path.color.hex}70`
+              }}
             >
-              <Icon className="w-4 h-4 text-white" />
+              <Icon className="w-4 h-4 text-white rotate-270" />
             </div>
           );
         })}
@@ -435,9 +438,12 @@ export default function AppHero() {
         {/* The outgoing "Insight" particle */}
         <div
           className="particle-insight absolute w-5 h-5 bg-yellow-300 
-                     rounded-full shadow-lg shadow-yellow-300/70
-                     flex items-center justify-center opacity-0"
-          style={{ top: 0, left: 0 }}
+                     rounded-full flex items-center justify-center opacity-0"
+          style={{ 
+            top: 0, 
+            left: 0,
+            boxShadow: '0 0 20px 4px rgba(253, 224, 71, 0.7)'
+          }}
         >
           <Sparkles className="w-3 h-3 text-yellow-900" />
         </div>
